@@ -2,8 +2,31 @@ import os
 
 import requests
 from dotenv import load_dotenv
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
 
 load_dotenv()
+
+
+app = FastAPI()
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/")
+async def serve_home(request: Request):
+    your_username = os.getenv('GITHUB_USERNAME')
+    your_token = os.getenv('GITHUB_TOKEN')
+    owner = os.getenv('GITHUB_OWNER')
+    repo_name = os.getenv('GITHUB_REPO')
+    success = get_latest_commit_status(your_username, your_token, owner, repo_name)
+    return templates.TemplateResponse("index.html", {"request": request, "success": success})
 
 
 def get_latest_commit_status(username, token, owner, repo_name):
@@ -43,9 +66,4 @@ def get_latest_commit_status(username, token, owner, repo_name):
     else:
         print("Some tests are failing.")
 
-if __name__ == "__main__":
-    your_username = os.getenv('GITHUB_USERNAME')
-    your_token = os.getenv('GITHUB_TOKEN')
-    owner = os.getenv('GITHUB_OWNER')
-    repo_name = os.getenv('GITHUB_REPO')
-    get_latest_commit_status(your_username, your_token, owner, repo_name)
+    return all_passed

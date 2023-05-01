@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: {% if success %}limegreen{% else %}red{% endif %};
+        }
+        h1 {
+            font-size: 4rem;
+            color: white;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        a {
+            color: {% if success %}darkgreen{% else %}darkred{% endif %};
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        {% if success %}
+            <h1>&#x1F389; Success!</h1>
+        {% else %}
+            <h1>&#x1F923; Oh no!</h1>
+        {% endif %}
+    </main>
+
+    <footer>
+        <a href="https://github.com/posthog/posthog" target="_blank">Check out PostHog on GitHub</a>
+    </footer>
+</body>
+</html>
